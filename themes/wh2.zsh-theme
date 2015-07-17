@@ -7,6 +7,13 @@ ZSH_THEME_GIT_PROMPT_SUFFIX="%{$fg_bold[blue]%}]%{$reset_color%}"
 ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg_bold[red]%}✘%{$reset_color%}"
 ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg_bold[green]%}✓%{$reset_color%}"
 
+ZSH_THEME_SECTION_PREFIX="%{$fg_bold[blue]%}[%{$fg_no_bold[green]%}"
+ZSH_THEME_SECTION_SUFFIX="%{$fg_bold[blue]%}]%{$reset_color%}"
+
+function prompt_section {
+	echo "${ZSH_THEME_SECTION_PREFIX}$*${ZSH_THEME_SECTION_SUFFIX}"
+}
+
 function prompt_char {
 	[[ $UID == 0 ]] && pc="%{$fg_bold[red]%}#%{$reset_color%}" || pc="%{$fg_bold[blue]%}%%%{$reset_color%}"
 	echo $pc
@@ -20,10 +27,9 @@ function prompt_git_branch {
 
 function prompt_git_status {
 	branch=$(prompt_git_branch)
-	dirty=$(parse_git_dirty)
-
 	if ! [[ -z $branch ]]; then
-		echo "$ZSH_THEME_GIT_PROMPT_PREFIX%{$fg_no_bold[green]%}${branch}%{$reset_color%} ${dirty}$ZSH_THEME_GIT_PROMPT_SUFFIX "
+		dirty=$(parse_git_dirty)
+		echo "$ZSH_THEME_GIT_PROMPT_PREFIX%{$fg_no_bold[green]%}${branch}%{$reset_color%} ${dirty}$ZSH_THEME_GIT_PROMPT_SUFFIX"
 	fi
 }
 
@@ -36,13 +42,15 @@ function prompt_user_host {
 }
 
 function prompt_path_info {
-	echo "%{$fg_bold[blue]%}[%{$fg_no_bold[green]%}%~%{$fg_bold[blue]%}]%{$reset_color%}"
+	# echo "%{$fg_bold[blue]%}[%{$fg_no_bold[green]%}%~%{$fg_bold[blue]%}]%{$reset_color%}"
+	prompt_section "%~"
 }
 
 function prompt_ruby_info {
-	echo "%{$fg_bold[blue]%}[%{$fg_no_bold[green]%}ruby:$(rbenv_prompt_info)%{$fg_bold[blue]%}]%{$reset_color%} "
+	ver=$(rbenv local 2> /dev/null) || ver=$(rbenv shell 2> /dev/null) || return 0
+	[[ -z $ver ]] || echo "$(prompt_section $ver) " 
 }
 
 PROMPT='
- $(prompt_user_host) $(prompt_path_info) $(prompt_ruby_info)
- $(prompt_ret_val)$(prompt_git_status)$(prompt_char) '
+$(prompt_user_host) $(prompt_path_info)
+$(prompt_ret_val)$(prompt_ruby_info)$(prompt_git_status)$(prompt_char) '
