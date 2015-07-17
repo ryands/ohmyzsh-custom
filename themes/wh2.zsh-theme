@@ -29,7 +29,7 @@ function prompt_git_status {
 	branch=$(prompt_git_branch)
 	if ! [[ -z $branch ]]; then
 		dirty=$(parse_git_dirty)
-		echo "$ZSH_THEME_GIT_PROMPT_PREFIX%{$fg_no_bold[green]%}${branch}%{$reset_color%} ${dirty}$ZSH_THEME_GIT_PROMPT_SUFFIX"
+		echo "$ZSH_THEME_GIT_PROMPT_PREFIX%{$fg_no_bold[green]%}${branch}%{$reset_color%} ${dirty}$ZSH_THEME_GIT_PROMPT_SUFFIX "
 	fi
 }
 
