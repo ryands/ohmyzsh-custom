@@ -1,5 +1,5 @@
 # meta
-editzsh() {
+vizsh() {
   $EDITOR $HOME/.oh-my-zsh
 }
 
@@ -8,6 +8,10 @@ alias gpr='git pull -r'
 alias grom='git rebase origin/master'
 alias glog='git log'
 alias wat='git status'
+alias grod='git rebase origin/develop'
+alias grc='git rebase --continue'
+alias grs='git rebase --skip'
+alias gra='git rebase --abort'
 
 # bundle/ruby/rails
 alias be='bundle exec'
