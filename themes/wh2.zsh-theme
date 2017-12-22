@@ -51,18 +51,6 @@ function prompt_ruby_info {
 	[[ -z $ver ]] || echo "$(prompt_section $ver) " 
 }
 
-function prompt_cloudfoundry_info {
-    [[ -f manifest.yml ]] || return 0
-
-    info=$(cloudfoundry_target)
-    #user=$(echo $info | cut -f1 -d '|')
-    org=$(echo $info | cut -f2 -d '|')
-    space=$(echo $info | cut -f3 -d '|')
-    
-    echo "$(prompt_section $org:$space)"
-}
-
-
 PROMPT='
-$(prompt_user_host) $(prompt_path_info) $(prompt_cloudfoundry_info)
+$(prompt_user_host) $(prompt_path_info)
 $(prompt_ret_val)$(prompt_ruby_info)$(prompt_git_status)$(prompt_char) '
